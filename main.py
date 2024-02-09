@@ -24,15 +24,22 @@ def check_obj_num(val):
 
 print(df[df['Acidity'].apply(lambda x: not check_obj_num(x))])
 #clearly an attribution line
+
 #Brute force method
 #for value in df['Acidity']:
     #if (not check_obj_num(value)):
         #print(df[df['Acidity'] == value])
 
-
-#remove problematic row which happens to be the last row
+#remove problematic row which happens to be the last row, convert Acidity to float
 df.drop(df.tail(1).index, inplace=True)
+df['Acidity'] = df['Acidity'].astype(float)
 print(df.info())
 
+print(df.head())
 
+#make the quality column binary (see the multiple methods in scratch)
+#use a pd.Series method, is the fastest
+df['Quality'] = pd.Series(np.where(df['Quality'].values == 'good', 1, 0), df.index)
+print(df.head())
 
+#get rid of the 'A_id' column
