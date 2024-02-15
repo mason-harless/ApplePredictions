@@ -117,17 +117,13 @@ print(F'\np-value for normality (> .05 to be normal')
 for column in cols:
     pval = round(stats.normaltest(df[column])[1], 5)
     if pval > .05:
-        print(F'Is normal, pvalue is: {pval}')
+        print(F'{column} is normal, pvalue is: {pval}')
     else:
-        print(F'Is not normal, pvalue is: {pval}')
+        print(F'{column} is not normal, pvalue is: {pval}')
 
 #look at imbalance of target
-#is there a reason this would be a bad way to do this?
-#maybe if i made a mistake and there were columns that weren't 0 or 1 it could be bad idk
-#good_quality = len(df[df['Quality'] == 1])
-#bad_quality = len(df[df['Quality'] == 0])
 
-#probably better, could also use the .eq(0) and eq(1)
+#could also use the .eq(0) and eq(1)
 print(df['Quality'].value_counts())
 good_q =(df['Quality'] == 1).sum()
 bad_q = (df['Quality'] == 0).sum()
@@ -136,28 +132,28 @@ bad_q = (df['Quality'] == 0).sum()
 print(F'The ratio of Good Quality to Bad quality is: {round(float(good_q / bad_q), 5)}')
 
 
+#BIVARIATE
+
+#show pair grid
+#this is largely from an example
+#none of the vars seem to have a clear correlation
+pair_grid = sns.PairGrid(df, vars=cols, corner=True, hue='Quality')
+pair_grid.map_lower(sns.scatterplot)
+pair_grid.map_diag(sns.histplot)
+pair_grid.fig.show()
+
+#lets see a heatmap
+#definitely more formatting that can be learned
+corr = df.corr()
+mask = np.triu(np.ones_like(corr))
+sns.heatmap(corr, annot=True, mask=mask, cmap=sns.cubehelix_palette(as_cmap=True))
+plt.show()
 
 
-
+#WHAT HAVE WE LEARNED ABOUT THE DATA SO FAR FROM EDA?????
 
 
 #PREPROCESSING
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #IPMPLEMENTATION AND TESTING
